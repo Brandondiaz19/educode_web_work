@@ -1,0 +1,12 @@
+{
+  "title": "Edu_Code | Aprende programación controlando tu Rover",
+  "description": "Edu_Code es un entorno educativo gamificado en Godot donde aprendes programación controlando un Rover en un mundo 3D.",
+  "language": "es",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}
