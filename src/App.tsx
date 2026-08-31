@@ -2,6 +2,7 @@ import { FormEvent, useEffect, useMemo, useState } from 'react'
 import menuPerfil from './assets/menu-perfil.png'
 import authScreen from './assets/auth.png'
 import menuSesion from './assets/menu-sesion.png'
+import { supabase } from './lib/supabase'
 
 const brand = {
   bg: '#07111F',
@@ -78,6 +79,10 @@ function BrandMark({ compact = false }: { compact?: boolean }) {
       </span>
     </div>
   )
+}
+
+function OfficialLogo({ className }: { className: string }) {
+  return <img src="/images/educode-logo.png" alt="Edu_Code" className={cn('block object-contain', className)} />
 }
 
 function Nav() {
@@ -163,6 +168,7 @@ function Hero() {
 
       <div className="relative z-10 max-w-6xl mx-auto px-5 sm:px-6 text-center">
         <div className="section-label mb-5">EDU_CODE // LEARNING MISSION</div>
+        <OfficialLogo className="mx-auto w-[min(78vw,620px)] h-auto" />
         <h1 className="font-display font-bold leading-[.98]" style={{ fontSize: 'clamp(2.7rem, 7vw, 6.2rem)', letterSpacing: '-0.035em' }}>
           Aprende programación
           <br />
@@ -449,31 +455,42 @@ function PasswordField({
 function ResetPasswordPage() {
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
-  const [accessToken, setAccessToken] = useState('')
   const [status, setStatus] = useState<'checking' | 'ready' | 'submitting' | 'success' | 'invalid'>('checking')
   const [message, setMessage] = useState('Validando enlace de recuperación…')
 
   useEffect(() => {
-    const hash = new URLSearchParams(window.location.hash.replace(/^#/, ''))
-    const token = hash.get('access_token') || ''
-    const type = hash.get('type') || ''
-    const authError = hash.get('error_description') || hash.get('error')
-
-    if (authError) {
+    const client = supabase
+    if (!client) {
       setStatus('invalid')
-      setMessage(decodeURIComponent(authError.replace(/\+/g, ' ')))
+      setMessage('La página todavía no tiene configuradas las variables públicas de Supabase.')
       return
     }
 
-    if (!token || (type && type !== 'recovery')) {
-      setStatus('invalid')
-      setMessage('El enlace no contiene una sesión de recuperación válida. Solicita un correo nuevo desde Edu_Code.')
-      return
+    let active = true
+    const validateSession = async () => {
+      const { data, error } = await client.auth.getSession()
+      if (!active) return
+      if (error || !data.session) {
+        setStatus('invalid')
+        setMessage('El enlace no contiene una sesión de recuperación válida o ya expiró.')
+      } else {
+        setStatus('ready')
+        setMessage('Crea una contraseña nueva para tu cuenta de Edu_Code.')
+      }
     }
 
-    setAccessToken(token)
-    setStatus('ready')
-    setMessage('Crea una contraseña nueva para tu cuenta de Edu_Code.')
+    const { data: listener } = client.auth.onAuthStateChange((event, session) => {
+      if (!active) return
+      if (event === 'PASSWORD_RECOVERY' && session) {
+        setStatus('ready')
+        setMessage('Crea una contraseña nueva para tu cuenta de Edu_Code.')
+      }
+    })
+    void validateSession()
+    return () => {
+      active = false
+      listener.subscription.unsubscribe()
+    }
   }, [])
 
   async function submit(event: FormEvent) {
@@ -489,10 +506,7 @@ function ResetPasswordPage() {
       return
     }
 
-    const supabaseUrl = (import.meta.env.VITE_SUPABASE_URL as string | undefined)?.replace(/\/$/, '')
-    const publishableKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY as string | undefined
-
-    if (!supabaseUrl || !publishableKey) {
+    if (!supabase) {
       setStatus('invalid')
       setMessage('La página todavía no tiene configuradas las variables públicas de Supabase.')
       return
@@ -502,22 +516,8 @@ function ResetPasswordPage() {
     setMessage('Actualizando contraseña…')
 
     try {
-      const response = await fetch(`${supabaseUrl}/auth/v1/user`, {
-        method: 'PUT',
-        headers: {
-          apikey: publishableKey,
-          Authorization: `Bearer ${accessToken}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ password }),
-      })
-
-      const payload = await response.json().catch(() => ({})) as { message?: string; error_description?: string; msg?: string }
-
-      if (!response.ok) {
-        const raw = payload.message || payload.error_description || payload.msg || 'No fue posible actualizar la contraseña.'
-        throw new Error(raw)
-      }
+      const { error } = await supabase.auth.updateUser({ password })
+      if (error) throw error
 
       window.history.replaceState({}, document.title, '/reset-password')
       setStatus('success')
@@ -541,12 +541,12 @@ function ResetPasswordPage() {
       <StarField count={150} />
       <div className="absolute inset-0 nebula-bg" />
       <div className="absolute inset-0 grid-bg opacity-50" />
-      <div className="absolute top-7 left-6"><BrandMark compact /></div>
       <div className="absolute top-8 right-6 font-mono text-[10px] hidden sm:flex items-center gap-2" style={{ color: brand.green }}>
         <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" /> AUTH CHANNEL ONLINE
       </div>
 
       <section className="reset-card relative z-10 w-full max-w-md">
+        <OfficialLogo className="mx-auto w-[min(58vw,240px)] h-auto" />
         <div className="font-mono text-[10px] tracking-[.18em] uppercase" style={{ color: brand.green }}>SECURE RECOVERY // EDU_CODE</div>
         <h1 className="font-display font-bold text-3xl sm:text-4xl mt-3">Restablecer contraseña</h1>
         <p className="mt-3 text-sm leading-6" style={{ color: brand.muted }}>{message}</p>
