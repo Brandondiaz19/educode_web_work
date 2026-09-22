@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&display=swap');
 @import 'tailwindcss';
 
 @theme inline {
@@ -13,11 +14,13 @@
   --color-cyan: #22D3EE;
   --color-green: #22C55E;
   --color-green-light: #4ADE80;
+  --color-phosphor: #00FF66;
   --color-text: #F5F7FF;
   --color-text-muted: #A7B0C5;
   --font-display: 'Space Grotesk', sans-serif;
   --font-body: 'Inter', sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
+  --font-doodle: 'Caveat', cursive;
 }
 
 * { box-sizing: border-box; scrollbar-width: thin; scrollbar-color: #1e2d50 transparent; }
@@ -32,6 +35,7 @@ button:disabled { cursor: wait; opacity: .72; }
 
 .font-display { font-family: 'Space Grotesk', sans-serif; }
 .font-mono { font-family: 'JetBrains Mono', monospace; }
+.font-doodle { font-family: 'Caveat', cursive; }
 
 @keyframes twinkle { 0%,100%{opacity:.2} 50%{opacity:1} }
 @keyframes hologram-flicker { 0%,97%,100%{opacity:1} 98%{opacity:.78} 99%{opacity:.9} }
@@ -90,6 +94,41 @@ button:disabled { cursor: wait; opacity: .72; }
 .reset-input:focus { border-color:#3B82F6; background:#0A1630; box-shadow:0 0 0 3px rgba(59,130,246,.11),0 0 20px rgba(59,130,246,.1); }
 .password-toggle { position:absolute; right:8px; top:50%; transform:translateY(-50%); border:0; background:transparent; color:#22D3EE; cursor:pointer; font-size:11px; font-family:'JetBrains Mono',monospace; padding:7px; border-radius:5px; }
 .password-toggle:hover { background:rgba(34,211,238,.07); }
+
+.pill-badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 9999px; font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; border: 1px solid; }
+.pill-purple { color: #C4B5FD; background: rgba(108,77,255,0.18); border-color: rgba(139,92,246,0.45); box-shadow: 0 0 16px rgba(108,77,255,0.25); }
+.pill-cyan { color: #A5F3FC; background: rgba(34,211,238,0.15); border-color: rgba(34,211,238,0.4); box-shadow: 0 0 16px rgba(34,211,238,0.2); }
+.pill-green { color: #86EFAC; background: rgba(74,222,128,0.15); border-color: rgba(74,222,128,0.4); box-shadow: 0 0 16px rgba(74,222,128,0.2); }
+
+.crt-terminal {
+  background: radial-gradient(circle at 50% 50%, #06180e 0%, #030b06 100%);
+  border: 1px solid rgba(0,255,102,0.35);
+  box-shadow: inset 0 0 40px rgba(0,255,102,0.12), 0 0 30px rgba(0,255,102,0.1);
+  position: relative;
+}
+.crt-terminal::after {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 0; left: 0; bottom: 0; right: 0;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.35) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+  z-index: 5;
+  background-size: 100% 3px, 3px 100%;
+  pointer-events: none;
+}
+
+.bento-card {
+  background: linear-gradient(155deg, rgba(11,22,48,0.85) 0%, rgba(8,16,35,0.92) 100%);
+  border: 1px solid rgba(108,77,255,0.22);
+  border-radius: 16px;
+  backdrop-filter: blur(12px);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.bento-card:hover {
+  border-color: rgba(108,77,255,0.5);
+  box-shadow: 0 0 35px rgba(108,77,255,0.15), 0 12px 30px rgba(0,0,0,0.4);
+  transform: translateY(-2px);
+}
 
 @media (max-width: 640px) {
   .section-shell { padding:74px 20px; }
