@@ -307,3 +307,6 @@ button:disabled { cursor: wait; opacity: .72; }
   html { scroll-behavior:auto; }
   *,*::before,*::after { animation:none !important; transition:none !important; }
 }
+
+/* Transparent game availability note alongside the real GitHub project link. */
+.spido-game-availability{margin:0 0 20px!important;color:#b8c8d7;font-size:12px!important;line-height:1.6;max-width:520px}
