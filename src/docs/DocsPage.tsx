@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import { categories, publicDocuments, type CategoryId } from './catalog'
+import { learningGuides } from './learningGuides'
 import './docs.css'
 
 type Filter = CategoryId | 'todos'
@@ -14,6 +15,8 @@ export default function DocsPage() {
     return inCategory && text.includes(normalized)
   }), [category, normalized])
   const selectedTitle = categories.find((entry) => entry.id === category)?.title
+  const topic = new URLSearchParams(window.location.search).get('tema')
+  const selectedGuide = learningGuides.find((guide) => guide.id === topic)
   return (
     <div className="spido-docs-page">
       <a className="spido-docs-skip" href="#archivo-contenido">Saltar al contenido</a>
@@ -32,6 +35,26 @@ export default function DocsPage() {
           <h1>Documentación <span>SpidoCode</span></h1>
           <p>Explora el diseño, desarrollo y aprendizaje detrás del videojuego. Los documentos estarán disponibles después de su revisión para publicación.</p>
           <div className="spido-docs-signal"><span aria-hidden="true">●</span> PORTAL EN PREPARACIÓN <span className="spido-docs-count">{publicDocuments.length} documentos publicados</span></div>
+        </section>
+        <section id="guias" className="spido-docs-library" aria-labelledby="learning-guides-title">
+          <div className="spido-docs-section-heading">
+            <p>00 / APRENDE CON SPID</p>
+            <h2 id="learning-guides-title">Guías conectadas al videojuego</h2>
+            <span>Conceptos del códice de SpidoCode. Puedes abrir cada guía directamente desde su enlace.</span>
+          </div>
+          {selectedGuide && <article className="spido-docs-learning-detail" id="guia-seleccionada">
+            <span className="spido-docs-kicker">{selectedGuide.group.toUpperCase()} / GUÍA A.D.A.</span>
+            <h3>{selectedGuide.title}</h3>
+            <p>{selectedGuide.summary}</p>
+            <pre><code>{selectedGuide.example}</code></pre>
+            <p><strong>Pista de A.D.A.:</strong> {selectedGuide.tip}</p>
+            <a href="/docs#guias">← Ver todas las guías</a>
+          </article>}
+          <div className="spido-docs-learning-grid">
+            {learningGuides.map((guide) => <a key={guide.id} href={`/docs?tema=${guide.id}#guias`} className="spido-docs-learning-card" aria-current={selectedGuide?.id === guide.id ? 'true' : undefined}>
+              <small>{guide.group}</small><strong>{guide.title}</strong><span>{guide.summary}</span><b>Leer guía ↗</b>
+            </a>)}
+          </div>
         </section>
         <section className="spido-docs-library" aria-labelledby="docs-categories-title">
           <div className="spido-docs-section-heading">
