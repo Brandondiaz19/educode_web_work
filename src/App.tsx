@@ -134,7 +134,7 @@ function Nav() {
             ONLINE
           </div>
           <a className="btn-primary py-2! px-4! text-xs! font-mono uppercase tracking-wider" href="#playtest">
-            <span>Lanzar Misión ↗</span>
+            <span>Estado del proyecto</span>
           </a>
         </div>
       </div>
@@ -1330,9 +1330,9 @@ function PlaytestReadySection() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
         <SectionHeader
-          badge="PLAYTEST READY"
+          badge="PROYECTO EN DESARROLLO"
           badgeType="purple"
-          doodle="ready to launch?"
+          doodle="conoce la misión"
           title="Tu próxima misión empieza con una línea de código."
           subtitle="Edu_Code se encuentra en desarrollo activo con la versión 1.6 corriendo en Godot Engine con persistencia remota en Supabase."
         />
@@ -1352,41 +1352,35 @@ function PlaytestReadySection() {
             </div>
           </div>
 
-          {/* Action Box with QR & Button */}
+          {/* Project information and navigation */}
           <div className="flex flex-col justify-between">
             <div>
               <div className="font-mono text-xs text-green-400 uppercase tracking-wider mb-2">
-                ACCESO DIRECTO & DESPLIEGUE
+                INFORMACIÓN DEL PROYECTO
               </div>
               <h3 className="font-display font-bold text-2xl text-white">
-                Escanea, abre Godot y programa el Rover.
+                Conoce las misiones y el estado del juego.
               </h3>
               <p className="text-sm text-slate-300 mt-3 leading-relaxed">
-                Prueba los niveles de calibración, minería en cuadrantes estocásticos 3x3 y el sistema de asistencia táctica
-                de A.D.A.
+                Explora la información sobre calibración, minería y asistencia de A.D.A.
+                Esta página presenta el proyecto; todavía no ofrece un enlace público para jugar o descargarlo.
               </p>
 
-              {/* QR Code graphic placeholder */}
               <div className="mt-6 flex items-center gap-4 p-4 rounded-xl border border-purple-500/20 bg-[#07111F]/70">
-                <div className="w-16 h-16 rounded-lg bg-white p-1.5 flex items-center justify-center flex-none shadow-md">
-                  <div className="w-full h-full border-2 border-slate-900 border-dashed flex items-center justify-center font-mono text-[9px] text-slate-900 font-bold text-center">
-                    QR CODE
-                  </div>
-                </div>
                 <div>
-                  <div className="font-display font-semibold text-sm text-white">Versión WebGL / PC</div>
+                  <div className="font-display font-semibold text-sm text-white">Acceso al juego pendiente de publicación</div>
                   <div className="font-mono text-xs text-slate-400 mt-0.5">Godot 4 + Supabase Auth</div>
-                  <div className="font-mono text-[10px] text-green-400 mt-1">STATUS: OPERACIONAL</div>
+                  <div className="font-mono text-[10px] text-green-400 mt-1">ESTADO: EN DESARROLLO</div>
                 </div>
               </div>
             </div>
 
             <div className="mt-8 space-y-3">
               <a
-                href="#inicio"
+                href="#misiones"
                 className="btn-primary w-full text-center text-sm font-mono uppercase tracking-wider justify-center"
               >
-                <span>Lanzar Misión en Godot ↗</span>
+                <span>Consultar misiones y su estado</span>
               </a>
               <div className="text-center">
                 <a
