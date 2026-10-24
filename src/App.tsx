@@ -149,8 +149,10 @@ function Hero() {
             <p>Programa junto a Spid. Explora un entorno espacial, resuelve misiones y aprende con cada intento.</p>
         <div className="spido-actions">
           <a href="#juego" className="spido-button">Conocer el juego <span aria-hidden="true">↗</span></a>
+          <a href="https://github.com/LeaGaj04/spido-code" target="_blank" rel="noopener noreferrer" className="spido-button spido-button-secondary" aria-label="Ver el proyecto oficial de SpidoCode en GitHub, se abre en una pestaña nueva">Ver proyecto del juego <span aria-hidden="true">↗</span></a>
           <a href="/docs" className="spido-button spido-button-docs" aria-label="Abrir Archivo A.D.A., centro de documentación de SpidoCode">📚 Ver documentación <span aria-hidden="true">↗</span></a>
         </div>
+            <p className="spido-game-availability" role="note">El juego está en desarrollo. El enlace al proyecto muestra su código y avances; todavía no es una descarga ni una versión jugable.</p>
             <div className="spido-hero-companion"><span>SPID / TU COMPAÑERO</span><p>Un pequeño robot con aspecto de computador y patas. Una gran aventura por descubrir.</p></div>
           </div>
         <figure className="spido-capture">
