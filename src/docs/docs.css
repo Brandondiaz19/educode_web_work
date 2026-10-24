@@ -1,0 +1,30 @@
+/* Archivo A.D.A. uses the official SpidoCode colors and PixelifySans from the landing. */
+.spido-docs-page{min-height:100vh;background:radial-gradient(circle at 82% 5%,#15304c 0,transparent 36%),#070e1c;color:#f3f7fa;font-family:Inter,sans-serif}
+.spido-docs-page *{box-sizing:border-box}
+.spido-docs-container{width:min(1160px,calc(100% - 48px));margin-inline:auto}
+.spido-docs-page :is(a,button,input):focus-visible{outline:2px solid #b1f878;outline-offset:4px}
+.spido-docs-skip{position:absolute;left:12px;top:-90px;z-index:100;background:#b1f878;color:#061122;padding:12px}.spido-docs-skip:focus{top:12px}
+.spido-docs-header{position:sticky;top:0;z-index:20;background:#070e1ced;border-bottom:1px solid #26354a;backdrop-filter:blur(12px)}
+.spido-docs-header-inner{display:flex;justify-content:space-between;align-items:center;gap:16px;min-height:78px}
+.spido-docs-logo{font:700 28px 'Spido Pixel',monospace;color:#edffe0;text-decoration:none;text-shadow:2px 2px #574384}.spido-docs-logo span{color:#b1f878}
+.spido-docs-header nav{display:flex;gap:24px;flex-wrap:wrap}.spido-docs-header nav a{font-size:13px;color:#c1cfdf;text-decoration:none}.spido-docs-header nav a:hover,.spido-docs-footer a:hover{color:#b1f878}
+.spido-docs-hero{padding:88px 0 78px;border-bottom:1px solid #293751;position:relative}.spido-docs-kicker,.spido-docs-section-heading>p{font:11px/1.6 'JetBrains Mono',monospace;color:#b1f878;letter-spacing:.14em}
+.spido-docs-hero h1{font:700 clamp(2.4rem,5vw,4.3rem)/1.13 'Space Grotesk',sans-serif;margin:17px 0 20px}.spido-docs-hero h1 span{color:#b1f878}
+.spido-docs-hero>p{max-width:690px;font-size:16px;line-height:1.8;color:#b9c7d9}
+.spido-docs-signal{display:inline-flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:25px;padding:12px 18px;background:#101c30;border:1px solid #325248;border-radius:8px;font:11px 'JetBrains Mono',monospace;color:#b1f878}
+.spido-docs-count{color:#b8c7d8;border-left:1px solid #38495a;padding-left:12px}
+.spido-docs-library,.spido-docs-results{padding:70px 0 16px}.spido-docs-section-heading{margin-bottom:26px}.spido-docs-section-heading h2{font:700 clamp(1.6rem,3vw,2.2rem) 'Space Grotesk',sans-serif;margin:10px 0}.spido-docs-section-heading>span{color:#acb9cb;font-size:14px}
+.spido-docs-categories{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:15px}
+.spido-docs-category{text-align:left;display:flex;flex-direction:column;align-items:flex-start;min-height:190px;border:1px solid #293e4c;border-radius:12px;background:linear-gradient(140deg,#101d33,#0a1527);color:#f3f7fa;padding:21px;cursor:pointer;transition:border-color .2s,background .2s}
+.spido-docs-category:hover,.spido-docs-category[aria-pressed=true]{border-color:#b1f878;background:#12293a}
+.spido-docs-category-icon{font-size:25px;color:#6ce6da;margin-bottom:11px}.spido-docs-category strong{font:650 17px 'Space Grotesk',sans-serif}.spido-docs-category>span:not(.spido-docs-category-icon){font-size:12px;color:#b5c1d1;margin:9px 0 16px;line-height:1.6}.spido-docs-category small{margin-top:auto;color:#b1f878;font:11px 'JetBrains Mono',monospace}
+.spido-docs-toolbar{display:flex;align-items:center;flex-wrap:wrap;gap:12px}.spido-docs-toolbar label{font-size:13px;color:#c6d1dd}.spido-docs-toolbar input{flex:1;min-width:170px;padding:13px 15px;color:#fff;background:#0b172a;border:1px solid #34475b;border-radius:8px}
+.spido-docs-toolbar button{color:#b1f878;border:1px solid #46604c;background:#101c30;padding:12px;border-radius:8px;cursor:pointer}
+.spido-docs-result-count{color:#abbccc;font:12px 'JetBrains Mono',monospace;margin:20px 0}
+.spido-docs-empty{text-align:center;border:1px dashed #435269;border-radius:13px;padding:55px 24px;background:#0b1627}.spido-docs-empty>div{font-size:36px;color:#6ce6da}.spido-docs-empty h3{font:600 22px 'Space Grotesk',sans-serif;margin:12px 0}.spido-docs-empty p{max-width:540px;margin:auto;color:#adbdcc;line-height:1.7;font-size:14px}
+.spido-docs-items{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.spido-docs-item{border:1px solid #30455a;border-radius:12px;padding:24px;background:#0b182c}.spido-docs-item>span,.spido-docs-item small{font:11px 'JetBrains Mono',monospace;color:#6ce6da}.spido-docs-item h3{font-size:20px;margin:12px 0}.spido-docs-item p{color:#bfcbdb;font-size:14px;line-height:1.6}.spido-docs-item-actions{display:flex;gap:18px;margin-top:20px}.spido-docs-item a{color:#b1f878;font-size:13px}
+.spido-docs-guidance{margin:56px 0 88px;padding:25px 30px;border-left:3px solid #6ce6da;background:#0c1c2b}.spido-docs-guidance strong{color:#b1f878;font:11px 'JetBrains Mono',monospace}.spido-docs-guidance p{color:#b9c8d7;font-size:14px;line-height:1.7;margin-bottom:0}
+.spido-docs-footer{border-top:1px solid #293751;padding:30px 0;color:#abbacd;font:11px 'JetBrains Mono',monospace}.spido-docs-footer>div{display:flex;justify-content:space-between;gap:15px;flex-wrap:wrap}.spido-docs-footer a{color:#c0d3e2;text-decoration:none}
+@media(max-width:850px){.spido-docs-categories{grid-template-columns:repeat(2,minmax(0,1fr))}.spido-docs-hero{padding:70px 0 60px}}
+@media(max-width:480px){.spido-docs-container{width:calc(100% - 32px)}.spido-docs-header-inner{min-height:68px;flex-wrap:wrap;padding:10px 0}.spido-docs-header nav{gap:12px}.spido-docs-header nav a{font-size:11px}.spido-docs-logo{font-size:23px}.spido-docs-hero{padding:48px 0}.spido-docs-library,.spido-docs-results{padding-top:50px}.spido-docs-categories{grid-template-columns:1fr}.spido-docs-category{min-height:150px}.spido-docs-items{grid-template-columns:1fr}.spido-docs-signal{font-size:10px}.spido-docs-count{border:0;padding:0}.spido-docs-guidance{margin-bottom:55px}}
+@media(prefers-reduced-motion:reduce){.spido-docs-category{transition:none}}
