@@ -149,7 +149,7 @@ function Hero() {
             <p>Programa junto a Spid. Explora un entorno espacial, resuelve misiones y aprende con cada intento.</p>
         <div className="spido-actions">
           <a href="#juego" className="spido-button">Conocer el juego <span aria-hidden="true">↗</span></a>
-          <a href="/docs" className="spido-button spido-button-secondary">Documentación <span aria-hidden="true">↓</span></a>
+          <a href="/docs" className="spido-button spido-button-docs" aria-label="Abrir Archivo A.D.A., centro de documentación de SpidoCode">📚 Ver documentación <span aria-hidden="true">↗</span></a>
         </div>
             <div className="spido-hero-companion"><span>SPID / TU COMPAÑERO</span><p>Un pequeño robot con aspecto de computador y patas. Una gran aventura por descubrir.</p></div>
           </div>
