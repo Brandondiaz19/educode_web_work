@@ -9,6 +9,10 @@
       "destination": "/index.html"
     },
     {
+      "source": "/jugar",
+      "destination": "/index.html"
+    },
+    {
       "source": "/",
       "destination": "/index.html"
     }
