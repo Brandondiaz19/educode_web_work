@@ -1,7 +1,13 @@
 {
-  "title": "Edu_Code | Aprende programación controlando tu Rover",
-  "description": "Edu_Code es un entorno educativo gamificado en Godot donde aprendes programación controlando un Rover en un mundo 3D.",
+  "title": "SPIDOCODE | Aprende programación. Explora un nuevo mundo.",
+  "description": "Aprende programación con SPIDOCODE. Acompaña a Spid en una aventura espacial de código, misiones y exploración.",
   "language": "es",
+  "icons": {
+    "icon": "/images/spidocode/mineral.png"
+  },
+  "openGraph": {
+    "image": "/images/spidocode/menu-spid.png"
+  },
   "robots": {
     "index": false
   },

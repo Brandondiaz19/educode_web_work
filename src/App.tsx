@@ -1,7 +1,4 @@
 import { FormEvent, useEffect, useMemo, useState } from 'react'
-import menuPerfil from './assets/menu-perfil.png'
-import authScreen from './assets/auth.png'
-import menuSesion from './assets/menu-sesion.png'
 import { supabase } from './lib/supabase'
 
 const brand = {
@@ -64,81 +61,40 @@ function StarField({ count = 100 }: { count?: number }) {
 
 function BrandMark({ compact = false }: { compact?: boolean }) {
   return (
-    <div className="flex items-center gap-2.5">
-      <div
-        className={cn('rounded flex items-center justify-center', compact ? 'w-8 h-8' : 'w-10 h-10')}
-        style={{
-          background: 'linear-gradient(135deg, #6C4DFF, #3B82F6)',
-          boxShadow: '0 0 20px rgba(108,77,255,.45)',
-        }}
-      >
-        <svg width={compact ? 18 : 22} height={compact ? 18 : 22} viewBox="0 0 22 22" fill="none" aria-hidden="true">
-          <path d="M11 2.5L19 7v8l-8 4.5L3 15V7l8-4.5Z" stroke="white" strokeWidth="1.6" />
-          <circle cx="11" cy="11" r="3" fill="white" />
-          <path d="M11 2.5V8M19 7l-4.8 2.8M3 7l4.8 2.8" stroke="white" strokeWidth="1" opacity=".75" />
-        </svg>
-      </div>
-      <span className="font-display font-bold tracking-[0.12em]" style={{ fontSize: compact ? 16 : 19 }}>
-        EDU_<span style={{ color: brand.green }}>CODE</span>
-      </span>
-    </div>
+    <span className={cn('spido-wordmark', compact && 'spido-wordmark-compact')} aria-label="SPIDOCODE">
+      SPIDO<span>CODE</span>
+    </span>
   )
 }
 
 function Nav() {
-  const [scrolled, setScrolled] = useState(false)
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 30)
-    onScroll()
-    window.addEventListener('scroll', onScroll)
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [])
-
+  const [open, setOpen] = useState(false)
   const links = [
-    ['Misión', '#inicio'],
-    ['Roles', '#responsabilidades'],
-    ['GDD', '#gdd'],
-    ['Historia', '#historia'],
-    ['User Flow', '#flujo'],
-    ['Árbol Radial', '#arbol'],
+    ['El juego', '#juego'],
+    ['Cómo se juega', '#como-jugar'],
     ['Misiones', '#misiones'],
+    ['Documentación', '#documentacion'],
+    ['Equipo', '#equipo'],
   ]
-
   return (
-    <nav
-      className="fixed inset-x-0 top-0 z-50 transition-all duration-300"
-      style={{
-        background: scrolled ? 'rgba(7,17,31,.92)' : 'rgba(7,17,31,.6)',
-        backdropFilter: 'blur(16px)',
-        borderBottom: scrolled ? '1px solid rgba(108,77,255,.2)' : '1px solid rgba(255,255,255,.05)',
-      }}
-    >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3.5 flex items-center justify-between gap-4">
-        <a href="#inicio" aria-label="Ir al inicio" className="flex items-center gap-3">
-          <BrandMark compact />
-          <span className="hidden sm:inline-block px-2.5 py-0.5 rounded-full text-[10px] font-mono tracking-wider font-semibold border border-green-400/30 text-green-400 bg-green-400/10">
-            v1.6 QoL
-          </span>
-        </a>
-        <div className="hidden md:flex items-center gap-6 text-sm">
-          {links.map(([label, href]) => (
-            <a key={href} href={href} className="nav-link font-medium hover:text-cyan-300 transition-colors">
-              {label}
-            </a>
-          ))}
-        </div>
-        <div className="flex items-center gap-3">
-          <div className="hidden lg:flex items-center gap-2 font-mono text-[11px] text-green-400">
-            <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-            ONLINE
-          </div>
-          <a className="btn-primary py-2! px-4! text-xs! font-mono uppercase tracking-wider" href="#playtest">
-            <span>Estado del proyecto</span>
-          </a>
-        </div>
+    <header className="spido-nav">
+      <div className="spido-container spido-nav-row">
+        <a href="#inicio" aria-label="SPIDOCODE — Inicio" onClick={() => setOpen(false)}><BrandMark compact /></a>
+        <button className="spido-menu-toggle" type="button" aria-expanded={open} aria-controls="landing-navigation" onClick={() => setOpen(!open)}>
+          {open ? 'Cerrar menú −' : 'Menú +'}
+        </button>
+        <nav id="landing-navigation" aria-label="Navegación principal" className={cn('spido-nav-links', open && 'is-open')}
+          onKeyDown={(event) => {
+            if (event.key === 'Escape') {
+              setOpen(false)
+              document.querySelector<HTMLButtonElement>('.spido-menu-toggle')?.focus()
+            }
+          }}>
+          {links.map(([label, href]) => <a key={href} href={href} onClick={() => setOpen(false)}>{label}</a>)}
+        </nav>
+        <span className="spido-nav-status"><span aria-hidden="true">●</span> En desarrollo</span>
       </div>
-    </nav>
+    </header>
   )
 }
 
@@ -181,100 +137,106 @@ function SectionHeader({
 
 function Hero() {
   return (
-    <section id="inicio" className="relative pt-28 pb-20 sm:pt-36 sm:pb-28 overflow-hidden">
-      <StarField count={140} />
-      <div className="absolute inset-0 pointer-events-none nebula-bg opacity-70" />
-      <div className="absolute inset-0 pointer-events-none grid-bg opacity-40" />
-
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6">
-        {/* Top telemetry bar */}
-        <div className="flex items-center justify-between font-mono text-[11px] text-slate-400 mb-6 border-b border-purple-500/20 pb-3">
-          <div className="flex items-center gap-2 text-cyan-400">
-            <span className="text-purple-400 font-bold">EDU_CODE</span> // CASE_01 // ROVER_MISSION
-          </div>
-          <div className="flex items-center gap-3">
-            <span className="hidden sm:inline text-slate-500">SECTOR_COORD: [0,0] TO [3,3]</span>
-            <span className="text-green-400 flex items-center gap-1.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
-              MISSION ONLINE - 2026
-            </span>
-          </div>
+    <section id="inicio" className="spido-hero">
+      <StarField count={65} />
+      <div className="spido-container relative">
+        <div className="spido-hero-layout">
+          <div className="spido-hero-copy">
+            <div className="spido-eyebrow"><span aria-hidden="true">＋</span> UNA MISIÓN. TU CÓDIGO.</div>
+            <div className="spido-hero-brand"><BrandMark /></div>
+            <h1>Aprende programación.<br /><span>Explora un nuevo mundo.</span></h1>
+            <p>Programa junto a Spid. Explora un entorno espacial, resuelve misiones y aprende con cada intento.</p>
+        <div className="spido-actions">
+          <a href="#juego" className="spido-button">Conocer el juego <span aria-hidden="true">↗</span></a>
+          <a href="#documentacion" className="spido-button spido-button-secondary">Documentación <span aria-hidden="true">↓</span></a>
         </div>
-
-        {/* Hero Visual Card / Board */}
-        <div className="relative rounded-2xl border border-purple-500/30 overflow-hidden bg-gradient-to-b from-[#09152C] via-[#07111F] to-[#050C16] shadow-[0_0_80px_rgba(108,77,255,0.18)] p-6 sm:p-10">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
-          <div className="absolute bottom-0 left-0 w-96 h-96 bg-purple-600/15 rounded-full blur-3xl pointer-events-none" />
-
-          <div className="relative z-10 grid lg:grid-cols-[1.1fr_.9fr] gap-8 items-center">
-            <div>
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-medium text-cyan-300 bg-cyan-950/60 border border-cyan-500/30 mb-5">
-                <span>MISSION 1.6</span>
-                <span className="text-slate-500">•</span>
-                <span>QoL EN MISIONES & ÁRBOL RADIAL</span>
-              </div>
-
-              <h1 className="font-display font-bold text-4xl sm:text-6xl tracking-tight text-white leading-[1.05]">
-                EDU_CODE //
-                <br />
-                <span className="gradient-text">Rover Mission</span>
-              </h1>
-
-              <p className="mt-5 text-base sm:text-lg text-slate-300 leading-relaxed max-w-xl">
-                Un juego de programación y minería espacial en 3D donde cada línea de código pone al Rover en movimiento.
-                Aprende lógica algorítmica resolviendo restricciones operativas en un asteroide hostil.
-              </p>
-
-              {/* Floating metadata capsule (from Figma mockup) */}
-              <div className="mt-8 grid grid-cols-2 sm:grid-cols-4 gap-3 p-4 rounded-xl border border-purple-500/20 bg-[#0B1630]/80 backdrop-blur-md">
-                <div>
-                  <div className="font-mono text-[10px] text-slate-400 uppercase">Team</div>
-                  <div className="font-display font-bold text-sm text-slate-200 mt-0.5">Univ. Indie</div>
-                </div>
-                <div>
-                  <div className="font-mono text-[10px] text-slate-400 uppercase">Engine</div>
-                  <div className="font-display font-bold text-sm text-cyan-400 mt-0.5">Godot 4</div>
-                </div>
-                <div>
-                  <div className="font-mono text-[10px] text-slate-400 uppercase">Backend</div>
-                  <div className="font-display font-bold text-sm text-green-400 mt-0.5">Supabase</div>
-                </div>
-                <div>
-                  <div className="font-mono text-[10px] text-slate-400 uppercase">Role</div>
-                  <div className="font-display font-bold text-sm text-purple-300 mt-0.5">GDScript & 3D</div>
-                </div>
-              </div>
-
-              <div className="mt-8 flex flex-wrap items-center gap-3.5">
-                <a href="#misiones" className="btn-primary text-sm">
-                  <span>Explorar 15 Misiones</span>
-                </a>
-                <a href="#gdd" className="btn-outline text-sm">
-                  Ver Blueprint GDD
-                </a>
-              </div>
-            </div>
-
-            {/* In-engine Hero illustration frame */}
-            <div className="relative">
-              <div className="relative rounded-xl overflow-hidden border border-purple-400/30 shadow-2xl group">
-                <img
-                  src="/images/figma/figma-board-1.png"
-                  alt="EDU_CODE Rover Mission Key Visual"
-                  className="w-full h-auto object-cover max-h-[420px] transition-transform duration-700 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#07111F] via-transparent to-transparent opacity-60" />
-                <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between text-[11px] font-mono p-2.5 rounded-lg bg-[#07111F]/90 border border-cyan-500/30 backdrop-blur-sm">
-                  <span className="text-cyan-300 flex items-center gap-1.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
-                    TARGET: ASTEROIDE MINERO TIER 3
-                  </span>
-                  <span className="text-green-400">ESTOCÁSTICO 3X3</span>
-                </div>
-              </div>
-            </div>
+            <div className="spido-hero-companion"><span>SPID / TU COMPAÑERO</span><p>Un pequeño robot con aspecto de computador y patas. Una gran aventura por descubrir.</p></div>
           </div>
+        <figure className="spido-capture">
+          <div className="spido-capture-bar"><span><span className="spido-live-dot" aria-hidden="true" /> SPIDOCODE / ARTE OFICIAL</span><span>MENÚ DEL JUEGO</span></div>
+          <img src="/images/spidocode/menu-spid.png" alt="Spid, robot con pantalla y patas, sobre un asteroide low-poly con cristales verdes y fondo espacial violeta" width="1672" height="941" fetchPriority="high" />
+          <figcaption><span>SPID Y SU MUNDO</span><span>Fondo oficial del menú de SPIDOCODE.</span></figcaption>
+        </figure>
         </div>
+        <div className="spido-hero-footer"><span>APRENDER HACIENDO</span><span>CÓDIGO + EXPLORACIÓN + PROGRESIÓN</span><a href="#juego">Explorar <span aria-hidden="true">↓</span></a></div>
+      </div>
+    </section>
+  )
+}
+
+function GameExperience() {
+  return (
+    <>
+      <section id="juego" className="spido-container spido-section">
+        <div className="spido-section-intro">
+          <p className="spido-eyebrow">01 / EL JUEGO</p>
+          <h2>Pequeñas instrucciones.<br /><span>Grandes descubrimientos.</span></h2>
+          <p>SPIDOCODE combina programación y exploración espacial. El código deja de ser algo abstracto: se convierte en movimiento, recursos y nuevas posibilidades dentro del mundo.</p>
+        </div>
+        <div className="spido-experience-grid">
+          <article className="spido-feature spido-feature-spid">
+            <span className="spido-feature-number">01 / SPID</span>
+            <img className="spido-character-art" src="/images/spidocode/menu-spid.png" alt="Spid en el arte oficial del menú del videojuego" width="1672" height="941" loading="lazy" />
+            <h3>Conoce a Spid.</h3>
+            <p>Un robot con aspecto de computador y patas, listo para explorar. Tú preparas las instrucciones; la misión te invita a observar, aprender y volver a intentar.</p>
+            <div className="spido-feature-note">EXPLORA · OBSERVA · VUELVE A INTENTAR</div>
+          </article>
+          <article className="spido-feature">
+            <span className="spido-feature-number">02 / EDITOR DE CÓDIGO</span>
+            <h3>Escribe. Ejecuta. Comprende.</h3>
+            <p>Combina instrucciones, repeticiones y decisiones desde el editor del juego. El resultado de tu código se convierte en una acción visible.</p>
+            <div className="spido-code-preview" aria-label="Conceptos de programación"><span>01</span> instrucciones<br /><span>02</span> bucles<br /><span>03</span> condicionales</div>
+          </article>
+          <article className="spido-feature">
+            <span className="spido-feature-number">03 / A.D.A.</span>
+            <h3>Una pista para seguir.</h3>
+            <p>A.D.A. acompaña el aprendizaje con orientación y pistas para comprender errores y seguir avanzando.</p>
+            <div className="spido-feature-note spido-note-cyan">ASISTENCIA EN EL JUEGO</div>
+          </article>
+        </div>
+      </section>
+      <section id="como-jugar" className="spido-how">
+        <div className="spido-container spido-section">
+          <div className="spido-section-intro">
+            <p className="spido-eyebrow">02 / CÓMO SE JUEGA</p>
+            <h2>Tu lógica marca el camino.</h2>
+          </div>
+          <ol className="spido-steps">
+            {[
+              ['Observa la misión', 'Descubre el objetivo, el entorno y los recursos disponibles.'],
+              ['Prepara tus instrucciones', 'Usa el editor para planificar acciones y resolver el desafío.'],
+              ['Ejecuta y aprende', 'Observa el resultado, ajusta tu código y sigue explorando.'],
+            ].map(([title, copy], index) => <li key={title}><span className="spido-step-number">0{index + 1}</span><h3>{title}</h3><p>{copy}</p></li>)}
+          </ol>
+          <div className="spido-progression"><span className="spido-eyebrow">EXPLORACIÓN Y PROGRESIÓN</span><p>Superar desafíos y reunir recursos abre nuevas posibilidades: más terreno para explorar y nuevas herramientas de programación para tus próximas misiones.</p></div>
+        </div>
+      </section>
+    </>
+  )
+}
+
+function DocumentationNotice() {
+  return (
+    <section id="documentacion" className="spido-container spido-section">
+      <div className="spido-docs">
+        <div><p className="spido-eyebrow">04 / ARCHIVO DE MISIÓN</p><h2>Detrás del juego,<br />un proyecto por descubrir.</h2><p>Estamos preparando un espacio para consultar el diseño del juego, su arquitectura y el proceso de desarrollo.</p></div>
+        <div className="spido-docs-status"><span className="spido-status-label">DOCUMENTACIÓN</span><strong>En preparación</strong><p>Los documentos todavía no están publicados. Mientras tanto, puedes consultar las notas de diseño y desarrollo de esta página.</p><a href="#notas-tecnicas">Consultar notas actuales <span aria-hidden="true">↓</span></a></div>
+      </div>
+    </section>
+  )
+}
+
+function TeamAndTechnology() {
+  return (
+    <section id="equipo" className="spido-container spido-team">
+      <div>
+        <p className="spido-eyebrow">05 / EQUIPO Y TECNOLOGÍAS</p>
+        <h2>Construido para aprender.</h2>
+        <p>Un proyecto universitario que une desarrollo de videojuegos y aprendizaje de programación.</p>
+      </div>
+      <div className="spido-tech-groups">
+        <div><h3>El videojuego</h3><ul aria-label="Tecnologías del juego">{['Godot 4', 'GDScript', 'Supabase'].map((tech) => <li key={tech}>{tech}</li>)}</ul></div>
+        <div><h3>Esta web</h3><ul aria-label="Tecnologías de la web">{['React', 'TypeScript', 'Vite', 'Tailwind CSS'].map((tech) => <li key={tech}>{tech}</li>)}</ul></div>
       </div>
     </section>
   )
@@ -428,7 +390,7 @@ function GDDBlueprintSection() {
                 <span className="font-mono text-xs font-bold text-green-300">GDD</span>
                 <span className="font-mono text-[9px] text-green-400">v1.6</span>
               </div>
-              <h3 className="font-display font-bold text-2xl text-white">GDD RoverEduCode</h3>
+              <h3 className="font-display font-bold text-2xl text-white">GDD SPIDOCODE</h3>
               <p className="text-xs font-mono text-cyan-400 mt-1 uppercase tracking-wider">
                 SISTEMA PEDAGÓGICO & A.D.A.
               </p>
@@ -728,7 +690,7 @@ function UserFlowSection() {
           badgeType="purple"
           doodle="if syntax == OK"
           title="Del briefing al guardado, sin romper la cadena."
-          subtitle="La arquitectura de ejecución de RoverEduCode conecta el input educativo del alumno directamente con el motor de física y la persistencia en la nube."
+          subtitle="La arquitectura de ejecución de SPIDOCODE conecta el input educativo del alumno directamente con el motor de física y la persistencia en la nube."
         />
 
         {/* Pedagogical Callout Box: IF before FOR */}
@@ -1001,34 +963,11 @@ function RadialTreeAndAssetsSection() {
           ))}
         </div>
 
-        {/* Dual Screen Showcase (Concept Art vs Real Engine) */}
-        <div className="grid lg:grid-cols-2 gap-6">
-          <div className="product-frame">
-            <div className="window-bar">
-              <div className="flex gap-1.5" aria-hidden="true">
-                <span className="window-dot bg-red-400" />
-                <span className="window-dot bg-yellow-300" />
-                <span className="window-dot bg-green-400" />
-              </div>
-              <span className="font-mono text-xs text-slate-400">01 // GODOT 4 REAL BUILD (AUTENTICADO)</span>
-              <span className="font-mono text-[10px] ml-auto text-green-400">BUILD EN EJECUCIÓN</span>
-            </div>
-            <img src={menuPerfil} alt="Edu_Code Menú Perfil Real" className="w-full h-auto block object-cover" />
-          </div>
-
-          <div className="product-frame">
-            <div className="window-bar">
-              <div className="flex gap-1.5" aria-hidden="true">
-                <span className="window-dot bg-red-400" />
-                <span className="window-dot bg-yellow-300" />
-                <span className="window-dot bg-green-400" />
-              </div>
-              <span className="font-mono text-xs text-slate-400">02 // GODOT 4 ACCESO Y PARTIDA</span>
-              <span className="font-mono text-[10px] ml-auto text-cyan-400">SISTEMA ONLINE</span>
-            </div>
-            <img src={menuSesion} alt="Edu_Code Menú Sesión Real" className="w-full h-auto block object-cover" />
-          </div>
-        </div>
+        <figure className="spido-capture">
+          <div className="spido-capture-bar"><span>RECURSO OFICIAL DEL MENÚ</span><span>SPIDOCODE</span></div>
+          <img src="/images/spidocode/menu-spid.png" alt="Entorno espacial oficial de SPIDOCODE con Spid y cristales verdes" width="1672" height="941" loading="lazy" />
+          <figcaption><span>ARTE DEL MENÚ</span><span>Las capturas actuales de gameplay y del editor todavía no están disponibles para esta galería.</span></figcaption>
+        </figure>
       </div>
     </section>
   )
@@ -1036,24 +975,7 @@ function RadialTreeAndAssetsSection() {
 
 function HowToPlayAndMissionsSection() {
   const [missionFilter, setMissionFilter] = useState<'all' | 'live' | 'integracion' | 'roadmap'>('live')
-
-  const loopSteps = [
-    {
-      num: '01',
-      title: 'Analiza misión',
-      desc: 'Consulta el objetivo persistente en el panel. Observa la distancia, los depósitos en el terreno y las restricciones operativas.',
-    },
-    {
-      num: '02',
-      title: 'Escribe comandos y bucles',
-      desc: 'Escribe código en el TextEdit de Godot: métodos directos, bucles while, inspección con sensores condicionales o repetición for.',
-    },
-    {
-      num: '03',
-      title: 'Ejecuta y observa',
-      desc: 'Presiona Ctrl+Enter para ejecución continua o F10 para depuración paso a paso. El rover extrae minerales con detención reactiva.',
-    },
-  ]
+  const [showAllMissions, setShowAllMissions] = useState(false)
 
   const missions = [
     {
@@ -1202,41 +1124,28 @@ function HowToPlayAndMissionsSection() {
     <section id="misiones" className="py-20 relative bg-[#060E1A]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <SectionHeader
-          badge="HOW TO PLAY?"
+          badge="03 / MISIONES"
           badgeType="purple"
-          doodle="3 pasos / 1 misión"
-          title="Aprender código es tomar el control."
-          subtitle="El Core Loop pedagógico de RoverEduCode transforma la frustración de la sintaxis en victorias tangibles de exploración espacial."
+          doodle="aprende a tu ritmo"
+          title="Cada misión, una nueva forma de pensar."
+          subtitle="Explora los desafíos descritos en el diseño actual del proyecto. Sus estados distinguen la base implementada, la integración y las próximas etapas."
         />
-
-        {/* 3 Steps Game Loop */}
-        <div className="grid md:grid-cols-3 gap-6 mb-14">
-          {loopSteps.map((step) => (
-            <div key={step.num} className="bento-card p-6 relative overflow-hidden">
-              <div className="font-mono text-6xl font-bold absolute -right-2 -top-2 text-purple-600/10 select-none">
-                {step.num}
-              </div>
-              <div className="font-mono text-xs text-green-400 mb-4">PASO_{step.num}</div>
-              <h3 className="font-display font-bold text-lg text-white mb-2">{step.title}</h3>
-              <p className="text-sm text-slate-400 leading-relaxed">{step.desc}</p>
-            </div>
-          ))}
-        </div>
 
         {/* Mission Explorer */}
         <div className="bento-card p-6 sm:p-8">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-purple-500/20 pb-5 mb-6">
             <div>
-              <h3 className="font-display font-bold text-xl text-white">Campaña de Misiones Oficial (GDD v1.6)</h3>
+              <h3 className="font-display font-bold text-xl text-white">Bitácora de misiones</h3>
               <p className="text-xs text-slate-400 font-mono mt-0.5">
-                Secuencia activa integrada en mission_service.gd
+                Plan de misiones de la versión anterior · pendiente de revisión
               </p>
             </div>
 
             {/* Filter buttons */}
             <div className="flex items-center gap-1.5 flex-wrap">
               <button
-                onClick={() => setMissionFilter('live')}
+                aria-pressed={missionFilter === 'live'}
+                onClick={() => { setMissionFilter('live'); setShowAllMissions(false) }}
                 className={cn(
                   'px-3 py-1 rounded-full font-mono text-xs font-bold transition-all',
                   missionFilter === 'live'
@@ -1247,7 +1156,8 @@ function HowToPlayAndMissionsSection() {
                 Implementadas (1-10)
               </button>
               <button
-                onClick={() => setMissionFilter('integracion')}
+                aria-pressed={missionFilter === 'integracion'}
+                onClick={() => { setMissionFilter('integracion'); setShowAllMissions(false) }}
                 className={cn(
                   'px-3 py-1 rounded-full font-mono text-xs font-bold transition-all',
                   missionFilter === 'integracion'
@@ -1258,7 +1168,8 @@ function HowToPlayAndMissionsSection() {
                 En Integración (11-12)
               </button>
               <button
-                onClick={() => setMissionFilter('roadmap')}
+                aria-pressed={missionFilter === 'roadmap'}
+                onClick={() => { setMissionFilter('roadmap'); setShowAllMissions(false) }}
                 className={cn(
                   'px-3 py-1 rounded-full font-mono text-xs font-bold transition-all',
                   missionFilter === 'roadmap'
@@ -1269,7 +1180,8 @@ function HowToPlayAndMissionsSection() {
                 Roadmap (13-15)
               </button>
               <button
-                onClick={() => setMissionFilter('all')}
+                aria-pressed={missionFilter === 'all'}
+                onClick={() => { setMissionFilter('all'); setShowAllMissions(false) }}
                 className={cn(
                   'px-3 py-1 rounded-full font-mono text-xs font-bold transition-all',
                   missionFilter === 'all'
@@ -1282,8 +1194,8 @@ function HowToPlayAndMissionsSection() {
             </div>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-4">
-            {filteredMissions.map((m) => (
+          <div id="mission-list" className="grid md:grid-cols-2 gap-4">
+            {(showAllMissions ? filteredMissions : filteredMissions.slice(0, 4)).map((m) => (
               <div
                 key={m.id}
                 className="p-4 rounded-xl border border-slate-800 bg-[#07111F]/70 flex flex-col justify-between hover:border-purple-500/40 transition-colors"
@@ -1310,108 +1222,14 @@ function HowToPlayAndMissionsSection() {
                   <div className="font-mono text-xs text-cyan-300 mb-2">{m.concept}</div>
                   <p className="text-xs text-slate-300 leading-relaxed">{m.objective}</p>
                 </div>
-                <div className="mt-3 pt-2 border-t border-slate-800/80 font-mono text-[10px] text-slate-500 truncate">
-                  ID: {m.code}
-                </div>
               </div>
             ))}
           </div>
-        </div>
-      </div>
-    </section>
-  )
-}
-
-function PlaytestReadySection() {
-  return (
-    <section id="playtest" className="py-24 relative overflow-hidden">
-      <StarField count={80} />
-      <div className="absolute inset-0 grid-bg opacity-30 pointer-events-none" />
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
-        <SectionHeader
-          badge="PROYECTO EN DESARROLLO"
-          badgeType="purple"
-          doodle="conoce la misión"
-          title="Tu próxima misión empieza con una línea de código."
-          subtitle="Edu_Code se encuentra en desarrollo activo con la versión 1.6 corriendo en Godot Engine con persistencia remota en Supabase."
-        />
-
-        {/* Large Hardware Mockup & Play CTA */}
-        <div className="bento-card p-6 sm:p-10 grid lg:grid-cols-[1.2fr_.8fr] gap-8 items-center mb-12">
-          {/* Laptop mockup representation */}
-          <div className="relative rounded-xl overflow-hidden border border-purple-500/30 shadow-2xl group">
-            <img
-              src="/images/figma/figma-board-3.png"
-              alt="Edu_Code Playtest Mockup"
-              className="w-full h-auto object-cover max-h-[380px] transition-transform duration-700 group-hover:scale-105"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#07111F] via-transparent to-transparent opacity-60" />
-            <div className="absolute top-3 left-3 font-mono text-[11px] px-2.5 py-1 rounded bg-[#07111F]/80 border border-purple-500/30 text-purple-300 backdrop-blur-sm">
-              GODOT 4 BUILD // WORKSTATION TERMINAL
-            </div>
-          </div>
-
-          {/* Project information and navigation */}
-          <div className="flex flex-col justify-between">
-            <div>
-              <div className="font-mono text-xs text-green-400 uppercase tracking-wider mb-2">
-                INFORMACIÓN DEL PROYECTO
-              </div>
-              <h3 className="font-display font-bold text-2xl text-white">
-                Conoce las misiones y el estado del juego.
-              </h3>
-              <p className="text-sm text-slate-300 mt-3 leading-relaxed">
-                Explora la información sobre calibración, minería y asistencia de A.D.A.
-                Esta página presenta el proyecto; todavía no ofrece un enlace público para jugar o descargarlo.
-              </p>
-
-              <div className="mt-6 flex items-center gap-4 p-4 rounded-xl border border-purple-500/20 bg-[#07111F]/70">
-                <div>
-                  <div className="font-display font-semibold text-sm text-white">Acceso al juego pendiente de publicación</div>
-                  <div className="font-mono text-xs text-slate-400 mt-0.5">Godot 4 + Supabase Auth</div>
-                  <div className="font-mono text-[10px] text-green-400 mt-1">ESTADO: EN DESARROLLO</div>
-                </div>
-              </div>
-            </div>
-
-            <div className="mt-8 space-y-3">
-              <a
-                href="#misiones"
-                className="btn-primary w-full text-center text-sm font-mono uppercase tracking-wider justify-center"
-              >
-                <span>Consultar misiones y su estado</span>
-              </a>
-              <div className="text-center">
-                <a
-                  href="/reset-password"
-                  className="font-mono text-xs text-slate-400 hover:text-cyan-300 transition-colors underline underline-offset-4"
-                >
-                  ¿Olvidaste tu contraseña? Restablecer acceso aquí ➔
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Telemetry Grid Gallery */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-          <div className="p-4 rounded-xl border border-slate-800 bg-[#07111F]/70 text-center">
-            <div className="font-mono text-lg font-bold text-cyan-400">10 / 15</div>
-            <div className="font-mono text-[10px] text-slate-400 uppercase mt-1">Misiones Implementadas</div>
-          </div>
-          <div className="p-4 rounded-xl border border-slate-800 bg-[#07111F]/70 text-center">
-            <div className="font-mono text-lg font-bold text-green-400">3x3 TIER 3</div>
-            <div className="font-mono text-[10px] text-slate-400 uppercase mt-1">Generación Procedural</div>
-          </div>
-          <div className="p-4 rounded-xl border border-slate-800 bg-[#07111F]/70 text-center">
-            <div className="font-mono text-lg font-bold text-purple-400">3 RAMAS</div>
-            <div className="font-mono text-[10px] text-slate-400 uppercase mt-1">Árbol Radial Line2D</div>
-          </div>
-          <div className="p-4 rounded-xl border border-slate-800 bg-[#07111F]/70 text-center">
-            <div className="font-mono text-lg font-bold text-amber-400">RLS READY</div>
-            <div className="font-mono text-[10px] text-slate-400 uppercase mt-1">Supabase Cloud Save</div>
-          </div>
+          {filteredMissions.length > 4 && (
+            <button type="button" className="spido-missions-toggle" aria-expanded={showAllMissions} aria-controls="mission-list" onClick={() => setShowAllMissions(!showAllMissions)}>
+              {showAllMissions ? 'Mostrar menos misiones' : `Ver las ${filteredMissions.length} misiones de esta categoría`} <span aria-hidden="true">{showAllMissions ? '−' : '+'}</span>
+            </button>
+          )}
         </div>
       </div>
     </section>
@@ -1420,14 +1238,10 @@ function PlaytestReadySection() {
 
 function Footer() {
   return (
-    <footer className="py-10 border-t border-purple-500/15" style={{ background: '#040A13' }}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-6">
-        <BrandMark compact />
-        <div className="font-mono text-[11px] text-center sm:text-right text-slate-400 leading-relaxed">
-          © 2026 EDU_CODE // PROYECTO UNIVERSITARIO
-          <br />
-          <span className="text-green-400">GODOT 4 + SUPABASE // SYSTEM ONLINE v1.6</span>
-        </div>
+    <footer className="spido-footer">
+      <div className="spido-container">
+        <div className="spido-footer-top"><a href="#inicio" aria-label="Volver al inicio de SPIDOCODE"><BrandMark compact /></a><p>Aprende programación. Explora un nuevo mundo.</p><a href="#inicio">Volver arriba ↑</a></div>
+        <div className="spido-footer-bottom"><span>© 2026 SPIDOCODE · PROYECTO UNIVERSITARIO</span><a href="/reset-password">Restablecer contraseña</a><span>EN DESARROLLO / HECHO CON GODOT</span></div>
       </div>
     </footer>
   )
@@ -1489,7 +1303,7 @@ function ResetPasswordPage() {
         setMessage('El enlace no contiene una sesión de recuperación válida o ya expiró.')
       } else {
         setStatus('ready')
-        setMessage('Crea una contraseña nueva para tu cuenta de Edu_Code.')
+        setMessage('Crea una contraseña nueva para tu cuenta de SPIDOCODE.')
       }
     }
 
@@ -1497,7 +1311,7 @@ function ResetPasswordPage() {
       if (!active) return
       if (event === 'PASSWORD_RECOVERY' && session) {
         setStatus('ready')
-        setMessage('Crea una contraseña nueva para tu cuenta de Edu_Code.')
+        setMessage('Crea una contraseña nueva para tu cuenta de SPIDOCODE.')
       }
     })
     void validateSession()
@@ -1535,7 +1349,7 @@ function ResetPasswordPage() {
 
       window.history.replaceState({}, document.title, '/reset-password')
       setStatus('success')
-      setMessage('Tu contraseña fue actualizada correctamente. Ya puedes volver a Edu_Code e iniciar sesión.')
+      setMessage('Tu contraseña fue actualizada correctamente. Ya puedes volver a SPIDOCODE e iniciar sesión.')
       setPassword('')
       setConfirmPassword('')
     } catch (error) {
@@ -1543,7 +1357,7 @@ function ResetPasswordPage() {
       const raw = error instanceof Error ? error.message : 'No fue posible actualizar la contraseña.'
       if (/expired|invalid.*token|jwt/i.test(raw)) {
         setStatus('invalid')
-        setMessage('El enlace expiró o ya no es válido. Solicita un correo de recuperación nuevo desde Edu_Code.')
+        setMessage('El enlace expiró o ya no es válido. Solicita un correo de recuperación nuevo desde SPIDOCODE.')
       } else {
         setMessage('No pudimos actualizar la contraseña. Inténtalo nuevamente en unos segundos.')
       }
@@ -1564,7 +1378,7 @@ function ResetPasswordPage() {
 
       <section className="reset-card relative z-10 w-full max-w-md">
         <div className="font-mono text-[10px] tracking-[.18em] uppercase text-green-400">
-          SECURE RECOVERY // EDU_CODE
+          SECURE RECOVERY // SPIDOCODE
         </div>
         <h1 className="font-display font-bold text-3xl sm:text-4xl mt-3 text-white">Restablecer contraseña</h1>
         <p className="mt-3 text-sm leading-6 text-slate-400">{message}</p>
@@ -1578,7 +1392,7 @@ function ResetPasswordPage() {
           <div className="mt-7 rounded-lg border border-red-500/30 bg-red-500/10 p-5">
             <div className="font-display font-semibold text-red-300">Enlace no disponible</div>
             <p className="text-sm mt-2 leading-6 text-slate-300">
-              Vuelve a Edu_Code y solicita "¿Olvidaste tu contraseña?" nuevamente.
+              Vuelve a SPIDOCODE y solicita "¿Olvidaste tu contraseña?" nuevamente.
             </p>
           </div>
         ) : (
@@ -1616,20 +1430,29 @@ function ResetPasswordPage() {
 
 function LandingPage() {
   return (
-    <>
+    <div className="spido-site">
+      <a className="spido-skip-link" href="#contenido">Saltar al contenido</a>
       <Nav />
-      <main>
+      <main id="contenido" tabIndex={-1}>
         <Hero />
-        <ResponsibilitiesSection />
-        <GDDBlueprintSection />
-        <GameStoryAndADA />
-        <UserFlowSection />
-        <RadialTreeAndAssetsSection />
-        <HowToPlayAndMissionsSection />
-        <PlaytestReadySection />
+        <GameExperience />
+        <div className="spido-campaign"><HowToPlayAndMissionsSection /></div>
+        <DocumentationNotice />
+        <TeamAndTechnology />
+        <section id="notas-tecnicas" className="spido-container spido-reference">
+          <details>
+            <summary>Notas de diseño y desarrollo <span>GDD, sistemas y progresión</span></summary>
+            <p className="spido-reference-notice">Referencia conservada de la versión anterior. Los estados y detalles técnicos están pendientes de revisión para SPIDOCODE.</p>
+            <ResponsibilitiesSection />
+            <GDDBlueprintSection />
+            <GameStoryAndADA />
+            <UserFlowSection />
+            <RadialTreeAndAssetsSection />
+          </details>
+        </section>
       </main>
       <Footer />
-    </>
+    </div>
   )
 }
 
