@@ -1,5 +1,6 @@
 import { FormEvent, useEffect, useMemo, useState } from 'react'
 import { supabase } from './lib/supabase'
+import DocsPage from './docs/DocsPage'
 
 const brand = {
   bg: '#07111F',
@@ -73,7 +74,7 @@ function Nav() {
     ['El juego', '#juego'],
     ['Cómo se juega', '#como-jugar'],
     ['Misiones', '#misiones'],
-    ['Documentación', '#documentacion'],
+    ['Documentación', '/docs'],
     ['Equipo', '#equipo'],
   ]
   return (
@@ -148,7 +149,7 @@ function Hero() {
             <p>Programa junto a Spid. Explora un entorno espacial, resuelve misiones y aprende con cada intento.</p>
         <div className="spido-actions">
           <a href="#juego" className="spido-button">Conocer el juego <span aria-hidden="true">↗</span></a>
-          <a href="#documentacion" className="spido-button spido-button-secondary">Documentación <span aria-hidden="true">↓</span></a>
+          <a href="/docs" className="spido-button spido-button-secondary">Documentación <span aria-hidden="true">↓</span></a>
         </div>
             <div className="spido-hero-companion"><span>SPID / TU COMPAÑERO</span><p>Un pequeño robot con aspecto de computador y patas. Una gran aventura por descubrir.</p></div>
           </div>
@@ -219,8 +220,8 @@ function DocumentationNotice() {
   return (
     <section id="documentacion" className="spido-container spido-section">
       <div className="spido-docs">
-        <div><p className="spido-eyebrow">04 / ARCHIVO DE MISIÓN</p><h2>Detrás del juego,<br />un proyecto por descubrir.</h2><p>Estamos preparando un espacio para consultar el diseño del juego, su arquitectura y el proceso de desarrollo.</p></div>
-        <div className="spido-docs-status"><span className="spido-status-label">DOCUMENTACIÓN</span><strong>En preparación</strong><p>Los documentos todavía no están publicados. Mientras tanto, puedes consultar las notas de diseño y desarrollo de esta página.</p><a href="#notas-tecnicas">Consultar notas actuales <span aria-hidden="true">↓</span></a></div>
+        <div><p className="spido-eyebrow">04 / ARCHIVO A.D.A.</p><h2>Detrás del juego,<br />un proyecto por descubrir.</h2><p>Explora el centro de documentación de SpidoCode: proyecto, arquitectura, Scrum, diagramas, pruebas y diseño del juego.</p></div>
+        <div className="spido-docs-status"><span className="spido-status-label">CENTRO DE DOCUMENTACIÓN</span><strong>Archivo A.D.A. disponible</strong><p>El portal está abierto. Los documentos PDF se incorporarán después de revisar su contenido y privacidad.</p><a href="/docs">Explorar Archivo A.D.A. <span aria-hidden="true">↗</span></a></div>
       </div>
     </section>
   )
@@ -1459,5 +1460,6 @@ function LandingPage() {
 export default function App() {
   const pathname = window.location.pathname.replace(/\/+$/, '') || '/'
   if (pathname === '/reset-password') return <ResetPasswordPage />
+  if (pathname === '/docs') return <DocsPage />
   return <LandingPage />
 }
