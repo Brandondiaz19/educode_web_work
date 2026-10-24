@@ -28,3 +28,20 @@
 @media(max-width:850px){.spido-docs-categories{grid-template-columns:repeat(2,minmax(0,1fr))}.spido-docs-hero{padding:70px 0 60px}}
 @media(max-width:480px){.spido-docs-container{width:calc(100% - 32px)}.spido-docs-header-inner{min-height:68px;flex-wrap:wrap;padding:10px 0}.spido-docs-header nav{gap:12px}.spido-docs-header nav a{font-size:11px}.spido-docs-logo{font-size:23px}.spido-docs-hero{padding:48px 0}.spido-docs-library,.spido-docs-results{padding-top:50px}.spido-docs-categories{grid-template-columns:1fr}.spido-docs-category{min-height:150px}.spido-docs-items{grid-template-columns:1fr}.spido-docs-signal{font-size:10px}.spido-docs-count{border:0;padding:0}.spido-docs-guidance{margin-bottom:55px}}
 @media(prefers-reduced-motion:reduce){.spido-docs-category{transition:none}}
+
+/* Guías de aprendizaje enlazables desde el juego */
+.spido-docs-learning-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.spido-docs-learning-card{display:flex;flex-direction:column;gap:11px;min-height:175px;padding:19px;border:1px solid #294359;border-radius:10px;background:#0e1b30;color:#f3f7fa;text-decoration:none}
+.spido-docs-learning-card:hover,.spido-docs-learning-card[aria-current=true]{border-color:#b1f878;background:#122738}
+.spido-docs-learning-card small{color:#6ce6da;font:11px 'JetBrains Mono',monospace}
+.spido-docs-learning-card strong{font:650 19px 'Space Grotesk',sans-serif}
+.spido-docs-learning-card span{color:#b7c6d7;font-size:12px;line-height:1.6}
+.spido-docs-learning-card b{margin-top:auto;color:#b1f878;font-size:12px}
+.spido-docs-learning-detail{padding:25px;background:#0b1c2b;border:1px solid #4b8064;border-radius:12px;margin-bottom:22px;scroll-margin-top:100px}
+.spido-docs-learning-detail h3{font:650 26px 'Space Grotesk',sans-serif;margin:12px 0}
+.spido-docs-learning-detail p{color:#c3d0dc;line-height:1.7}
+.spido-docs-learning-detail pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#061322;color:#aef1c4;padding:20px;border-radius:8px;line-height:1.7;font-size:13px}
+.spido-docs-learning-detail a{color:#b1f878}
+#guias{scroll-margin-top:80px}
+@media(max-width:900px){.spido-docs-learning-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:480px){.spido-docs-learning-grid{grid-template-columns:1fr}}
