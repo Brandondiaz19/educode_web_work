@@ -16,16 +16,21 @@ export default function WebAuth({ mode }: { mode: 'register' | 'login' }) {
     if(!supabase || busy) return
     setStatus('')
     if(registering && password!==confirm){setStatus('Las contraseñas no coinciden.');return}
-    if(password.length<6){setStatus('La contraseña debe tener al menos 6 caracteres.');return}
+    if(registering && password.length<6){setStatus('La contraseña debe tener al menos 6 caracteres.');return}
     setBusy(true)
     try{
       if(registering){
-        // El correo de confirmación usa el destino configurado en Supabase.
-        // No se fuerza una URL localhost ni un redirect no autorizado.
-        const {error}=await supabase.auth.signUp({email:email.trim(),password})
+        // Volver al dominio actual tras confirmar el correo.
+        const {data,error}=await supabase.auth.signUp({
+          email:email.trim(),
+          password,
+          options: {
+            emailRedirectTo: `${window.location.origin}/login`,
+          },
+        })
         if(error) throw error
         setComplete(true)
-        setStatus('Solicitud recibida. Si es una cuenta nueva, revisa tu correo para confirmar el registro. Después vuelve a SpidoCode e inicia sesión.')
+        setStatus(data.session ? 'Cuenta creada. Vuelve a SpidoCode e inicia sesión con las mismas credenciales.' : 'Solicitud recibida. Si es una cuenta nueva, revisa tu correo para confirmar el registro. Después vuelve a SpidoCode e inicia sesión.')
       }else{
         const {error}=await supabase.auth.signInWithPassword({email:email.trim(),password})
         if(error) throw error
@@ -43,10 +48,10 @@ export default function WebAuth({ mode }: { mode: 'register' | 'login' }) {
       <div className="spido-auth-intro"><p className="spido-auth-kicker">CUENTA DE EXPLORADOR // SPIDOCODE</p><h1>{registering?'Únete a la':'Bienvenido de'} <span>{registering?'misión.':'vuelta.'}</span></h1><p>La misma cuenta funciona en el videojuego y en tu perfil web. No necesitas registrarte dos veces.</p></div>
       <section className="spido-auth-card" aria-label={registering?'Crear cuenta':'Iniciar sesión'}>
         <h2>{registering?'Crear una cuenta':'Iniciar sesión'}</h2>
-        {!supabase?<p role="alert">La autenticación web todavía no está configurada. No es posible crear cuentas en este entorno.</p>:complete?<div role="status"><p>{status}</p><a className="spido-auth-primary" href="/perfil">Ir a mi perfil ↗</a></div>:<>
-          <form onSubmit={submit}>
+        {!supabase?<p role="alert">La autenticación web todavía no está configurada. No es posible crear cuentas en este entorno.</p>:complete?<div role="status"><p>{status}</p><a className="spido-auth-primary" href={registering ? '/login' : '/perfil'}>{registering ? 'Ir a iniciar sesión' : 'Ir a mi perfil ↗'}</a></div>:<>
+          <form onSubmit={submit} aria-busy={busy}>
             <label>Correo electrónico<input type="email" autoComplete="email" value={email} onChange={e=>setEmail(e.target.value)} required maxLength={254}/></label>
-            <label>Contraseña<input type="password" autoComplete={registering?'new-password':'current-password'} minLength={6} value={password} onChange={e=>setPassword(e.target.value)} required/></label>
+            <label>Contraseña<input type="password" autoComplete={registering?'new-password':'current-password'} minLength={registering ? 6 : undefined} value={password} onChange={e=>setPassword(e.target.value)} required/></label>
             {registering&&<label>Repetir contraseña<input type="password" autoComplete="new-password" minLength={6} value={confirm} onChange={e=>setConfirm(e.target.value)} required/></label>}
             <button className="spido-auth-primary" disabled={busy} type="submit">{busy?'Procesando…':registering?'Crear cuenta':'Entrar'}</button>
           </form>
