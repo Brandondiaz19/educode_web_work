@@ -13,6 +13,14 @@
       "destination": "/index.html"
     },
     {
+      "source": "/registro",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/login",
+      "destination": "/index.html"
+    },
+    {
       "source": "/",
       "destination": "/index.html"
     }
