@@ -13,7 +13,7 @@ type Progress = {
   updated_at: string | null
 }
 const safeList = (value: unknown): string[] => Array.isArray(value) ? value.filter((item): item is string => typeof item === 'string') : []
-const readable = (id: string) => id.replaceAll('_', ' ')
+const readable = (id: string) => id.replace(/_/g, ' ')
 
 export default function PlayerHub() {
   const [user, setUser] = useState<User | null>(null)
