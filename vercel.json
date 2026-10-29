@@ -9,6 +9,10 @@
       "destination": "/index.html"
     },
     {
+      "source": "/perfil",
+      "destination": "/index.html"
+    },
+    {
       "source": "/",
       "destination": "/index.html"
     }
