@@ -2,6 +2,7 @@ import { FormEvent, useEffect, useMemo, useState } from 'react'
 import { supabase } from './lib/supabase'
 import DocsPage from './docs/DocsPage'
 import PlayerHub from './PlayerHub'
+import WebAuth from './WebAuth'
 
 const brand = {
   bg: '#07111F',
@@ -1466,5 +1467,7 @@ export default function App() {
   if (pathname === '/reset-password') return <ResetPasswordPage />
   if (pathname === '/docs') return <DocsPage />
   if (pathname === '/perfil') return <PlayerHub />
+  if (pathname === '/registro') return <WebAuth mode="register" />
+  if (pathname === '/login') return <WebAuth mode="login" />
   return <LandingPage />
 }
