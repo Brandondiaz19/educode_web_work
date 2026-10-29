@@ -1,6 +1,7 @@
 import { useEffect, useState, type FormEvent } from 'react'
 import type { User } from '@supabase/supabase-js'
 import { supabase } from './lib/supabase'
+import { learningGuides } from './docs/learningGuides'
 import './PlayerHub.css'
 
 type Progress = {
@@ -118,9 +119,25 @@ export default function PlayerHub() {
                 <article><small>NIVEL DEL MAPA</small><strong>{progress.map_tier ?? 'Sin datos'}</strong></article>
                 <article><small>CONOCIMIENTOS</small><strong>{safeList(progress.unlocked_knowledge).length}</strong></article>
               </div>
-              <section className="spido-hub-panel">
-                <h2>Conocimientos desbloqueados</h2>
-                <div className="spido-hub-knowledge">{safeList(progress.unlocked_knowledge).length ? safeList(progress.unlocked_knowledge).map((id) => <a key={id} href={`/docs?tema=${encodeURIComponent(id)}#guias`}>{readable(id)} ↗</a>) : <p>Sin conocimientos registrados.</p>}</div>
+              <section className="spido-hub-panel" aria-labelledby="hub-codex-heading">
+                <div className="spido-hub-codex-heading">
+                  <div><p className="spido-hub-kicker">ARCHIVO A.D.A. // SINCRONIZADO</p><h2 id="hub-codex-heading">Tu Códice de programación</h2></div>
+                  <span className="spido-hub-codex-total">{learningGuides.filter((guide) => safeList(progress.unlocked_knowledge).includes(guide.id)).length} / {learningGuides.length} guías disponibles</span>
+                </div>
+                <p>Los conocimientos desbloqueados se leen de tu partida. Puedes estudiar sus guías sin modificar el progreso del juego.</p>
+                <div className="spido-hub-codex-grid">
+                  {learningGuides.map((guide) => {
+                    const unlocked = safeList(progress.unlocked_knowledge).includes(guide.id)
+                    return <article key={guide.id} className={`spido-hub-codex-card ${unlocked ? 'is-unlocked' : 'is-locked'}`}>
+                      <span>{guide.group} · {unlocked ? 'Desbloqueado' : 'Pendiente en el juego'}</span>
+                      <h3>{guide.title}</h3>
+                      <p>{unlocked ? guide.summary : 'Continúa avanzando en SpidoCode para desbloquear este conocimiento.'}</p>
+                      {unlocked && <a href={`/docs?tema=${encodeURIComponent(guide.id)}#guias`}>Estudiar con A.D.A. ↗</a>}
+                    </article>
+                  })}
+                </div>
+                {safeList(progress.unlocked_knowledge).some((id) => !learningGuides.some((guide) => guide.id === id)) &&
+                  <p className="spido-hub-note">Otros conocimientos registrados: {safeList(progress.unlocked_knowledge).filter((id) => !learningGuides.some((guide) => guide.id === id)).map(readable).join(', ')}. Todavía no tienen guía web publicada.</p>}
               </section>
               <p className="spido-hub-note">Última sincronización registrada: {progress.updated_at ? new Date(progress.updated_at).toLocaleString('es-CL') : 'Sin datos'}. Solo lectura.</p>
             </>}
